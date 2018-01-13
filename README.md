@@ -4,7 +4,7 @@
 
 Planning to do something interesting to predict some output based on the Bike Sharing Data hosted at the following site:
 
-!(https://archive.ics.uci.edu/ml/machine-learning-databases/00275/Bike-Sharing-Dataset.zip)[Bike Sharing Data] 
+![https://archive.ics.uci.edu/ml/machine-learning-databases/00275/Bike-Sharing-Dataset.zip](Bike Sharing Data) 
 
 At the time of writing this ReadMe, I've not yet bothered to download the data.  
 
