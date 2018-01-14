@@ -1,6 +1,0 @@
-hourCon <- file(hourCsvFileName, "r")
-hourDataRawLines <- readLines(hourCon)
-hourDataRawLinesLength <- length(hourDataRawLines)
-hourDataHeader <- strsplit("\.", hourDataRawLines[1])
-hourData <- data.frame(row.names = hourDataHeader, data = strsplit(x = hourDataRawLines[2:hourDataRawLinesLength], split = ","))
-close(hourCon)
