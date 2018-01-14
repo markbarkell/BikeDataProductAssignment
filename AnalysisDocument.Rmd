@@ -58,12 +58,37 @@ trainingHour <- hourData[hourPart,]
 testingHour <- hourData[-hourPart,]
 ```
 
-```{r }
+```{r worthyparameters}
 worthyDayParameters <- c("season", "mnth", "holiday", "weekday", "workingday", "weathersit", "temp", "atemp", "hum", "windspeed")
 worthyHourParameters <- c("season", "mnth", "holiday", "weekday", "workingday", "weathersit", "temp", "atemp", "hum", "windspeed", "hr")
 ```
 
+```{r training}
+treeBagDayModel <- caret::train(y = trainingDay$cnt, x = trainingDay[,worthyDayParameters], method = "treebag")
+treeBagHourModel <- caret::train(y = trainingHour$cnt, x = trainingHour[,worthyHourParameters], method = "treebag")
+```
 
+```{r trainingResdPlotDay}
+resdsDay <-  predict(treeBagDayModel, trainingDay[,worthyDayParameters]) - trainingDay$cnt
+plot(y = resdsDay, x = trainingDay$dteday)
+```
+
+```{r trainingResdPlotHourByDay}
+resdsHour <- predict(treeBagHourModel, trainingHour[,worthyHourParameters]) - trainingHour$cnt
+plot(y = resdsHour, x = trainingHour$dteday )
+```
+
+```{r trainingResdPlotHour}
+#as.POSIXct
+datetimeFormat <- "%Y-%m-%dT%H:%M"
+datesWithHours <- as.POSIXct(paste(as.character(trainingHour$dteday) , "T" , as.character(trainingHour$hr), ":00"), datetimeFormat )
+plot(y = resdsHour, x = datesWithHours )
+```
+
+
+```{r resdsHourHour}
+plot(y = resdsHour, x = trainingHour$hr)
+```
 
 ## References
 
