@@ -1,0 +1,71 @@
+---
+title: "Bike Data Model Building"
+author: "Mark Barkell"
+date: "January 13, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Executative Summary
+
+The Bike Data
+
+```{r downloadsomedata}
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/00275/Bike-Sharing-Dataset.zip"
+zipFileLocation = "./Bike-Sharing-Data.zip"
+if (!file.exists(zipFileLocation)) {
+  download.file(url, zipFileLocation)
+}
+dayCsvFileName = "./day.csv"
+hourCsvFileName = "./hour.csv"
+if (!file.exists(dayCsvFileName)) {
+  unzip(zipfile = zipFileLocation)
+}
+
+dayData <- read.csv(file = dayCsvFileName)
+hourData <- read.csv(file = hourCsvFileName)
+
+
+```
+
+```{r tidifydata}
+weekdayFactor <- as.factor(c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+seasonFactor <- as.factor(c("spring", "summer", "fall", "winter"))
+weathersitFactor <- as.factor(c("ClearOrFewCloudsOrPartyCloudy", "MistCloudyOrMistBrokenCloudsOrMistFewCloudsOrMist", "LightSnowOrLightRainOrThunderStormOrScatteredCloudsOrLightRainOrScatteredClouds", "HeavyRainOrIcePalletsOrThunderstormOrMistOrSnowOrFog"))
+dayData$season <- seasonFactor[dayData$season]
+hourData$season <- seasonFactor[hourData$season]
+dayData$weathersit <- weathersitFactor[dayData$weathersit]
+hourData$weathersit <- weathersitFactor[hourData$weathersit]
+dayData$weekday <- as.factor(1 + dayData$weekday)
+hourData$weekday <- as.factor(1 + hourData$weekday)
+```
+
+```{r libraryCalls, ignore=TRUE}
+library(caret)
+```
+
+```{r splitupthedata}
+# openssl rand -hex 4
+set.seed(0x86d36f8)
+dayPart <- createDataPartition(y = dayData$cnt, p = .7, list=FALSE)
+hourPart <- createDataPartition(y = hourData$cnt, p =  .7, list=FALSE)
+trainingDay <- dayData[dayPart,]
+testingDay <- dayData[-dayPart,]
+trainingHour <- hourData[hourPart,]
+testingHour <- hourData[-hourPart,]
+```
+
+```{r }
+worthyDayParameters <- c("season", "mnth", "holiday", "weekday", "workingday", "weathersit", "temp", "atemp", "hum", "windspeed")
+worthyHourParameters <- c("season", "mnth", "holiday", "weekday", "workingday", "weathersit", "temp", "atemp", "hum", "windspeed", "hr")
+```
+
+
+
+## References
+
+1. [Bike Sharing Dataset Data Set](https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset#)
+
