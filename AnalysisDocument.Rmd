@@ -50,8 +50,8 @@ library(caret)
 ```{r splitupthedata}
 # openssl rand -hex 4
 set.seed(0x86d36f8)
-dayPart <- createDataPartition(y = dayData$cnt, p = .7, list=FALSE)
-hourPart <- createDataPartition(y = hourData$cnt, p =  .7, list=FALSE)
+dayPart <- createDataPartition(y = dayData$casual, p = .9, list=FALSE)
+hourPart <- createDataPartition(y = hourData$casual, p =  .9, list=FALSE)
 trainingDay <- dayData[dayPart,]
 testingDay <- dayData[-dayPart,]
 trainingHour <- hourData[hourPart,]
@@ -64,17 +64,17 @@ worthyHourParameters <- c("season", "mnth", "holiday", "weekday", "workingday", 
 ```
 
 ```{r training}
-treeBagDayModel <- caret::train(y = trainingDay$cnt, x = trainingDay[,worthyDayParameters], method = "treebag")
-treeBagHourModel <- caret::train(y = trainingHour$cnt, x = trainingHour[,worthyHourParameters], method = "treebag")
+treeBagDayModel <- caret::train(y = trainingDay$casual, x = trainingDay[,worthyDayParameters], method = "treebag", preProcess = c("scale", "center", "BoxCox"))
+treeBagHourModel <- caret::train(y = trainingHour$casual, x = trainingHour[,worthyHourParameters], method = "treebag", preProcess = c("scale", "center", "BoxCox"))
 ```
 
 ```{r trainingResdPlotDay}
-resdsDay <-  predict(treeBagDayModel, trainingDay[,worthyDayParameters]) - trainingDay$cnt
+resdsDay <-  predict(treeBagDayModel, trainingDay[,worthyDayParameters]) - trainingDay$casual
 plot(y = resdsDay, x = trainingDay$dteday)
 ```
 
 ```{r trainingResdPlotHourByDay}
-resdsHour <- predict(treeBagHourModel, trainingHour[,worthyHourParameters]) - trainingHour$cnt
+resdsHour <- predict(treeBagHourModel, trainingHour[,worthyHourParameters]) - trainingHour$casual
 plot(y = resdsHour, x = trainingHour$dteday )
 ```
 
