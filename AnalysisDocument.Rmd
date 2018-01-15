@@ -64,17 +64,17 @@ worthyHourParameters <- c("season", "mnth", "holiday", "weekday", "workingday", 
 ```
 
 ```{r training}
-treeBagDayModel <- caret::train(y = trainingDay$casual, x = trainingDay[,worthyDayParameters], method = "treebag", preProcess = c("scale", "center", "BoxCox"))
-treeBagHourModel <- caret::train(y = trainingHour$casual, x = trainingHour[,worthyHourParameters], method = "treebag", preProcess = c("scale", "center", "BoxCox"))
+treeBagDayModel <- caret::train(y = (trainingDay$casual+1)/(trainingDay$registered+1), x = trainingDay[,worthyDayParameters], method = "treebag", preProcess = c("scale", "center", "BoxCox"))
+treeBagHourModel <- caret::train(y = (trainingHour$casual+1)/(trainingHour$registered+1), x = trainingHour[,worthyHourParameters], method = "treebag", preProcess = c("scale", "center", "BoxCox"))
 ```
 
 ```{r trainingResdPlotDay}
-resdsDay <-  predict(treeBagDayModel, trainingDay[,worthyDayParameters]) - trainingDay$casual
+resdsDay <-  predict(treeBagDayModel, trainingDay[,worthyDayParameters]) - (trainingDay$casual+1)/(trainingDay$registered+1)
 plot(y = resdsDay, x = trainingDay$dteday)
 ```
 
 ```{r trainingResdPlotHourByDay}
-resdsHour <- predict(treeBagHourModel, trainingHour[,worthyHourParameters]) - trainingHour$casual
+resdsHour <- predict(treeBagHourModel, trainingHour[,worthyHourParameters]) - (trainingHour$casual+1)/(trainingHour$registered + 1)
 plot(y = resdsHour, x = trainingHour$dteday )
 ```
 
