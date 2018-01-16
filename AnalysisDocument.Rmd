@@ -50,8 +50,8 @@ library(caret)
 ```{r splitupthedata}
 # openssl rand -hex 4
 set.seed(0x86d36f8)
-dayPart <- createDataPartition(y = dayData$casual, p = .9, list=FALSE)
-hourPart <- createDataPartition(y = hourData$casual, p =  .9, list=FALSE)
+dayPart <- createDataPartition(y = dayData$casual, p = .7, list=FALSE)
+hourPart <- createDataPartition(y = hourData$casual, p =  .7, list=FALSE)
 trainingDay <- dayData[dayPart,]
 testingDay <- dayData[-dayPart,]
 trainingHour <- hourData[hourPart,]
