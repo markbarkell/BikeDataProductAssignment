@@ -22,10 +22,11 @@ dayReader <- function () {
 }
 
 
-makethemodel <- function() {
+makeTheModel <- function() {
 set.seed(0x86d36f8)
-  dataData <- dayReader()
+  dayData <- dayReader()
   dayPart <- createDataPartition(y = dayData$casual, p = .7, list=FALSE)
+  trainingDay <- dayData[dayPart,] 
   worthyDayParameters <- c("season", "mnth", "holiday", "weekday", "workingday", "weathersit", "temp", "atemp", "hum", "windspeed")  
   treeBagDayModel <- caret::train(y = (trainingDay$casual+1)/(trainingDay$registered+1), x = trainingDay[,worthyDayParameters], method = "treebag", preProcess = c("scale", "center", "BoxCox"))
   return (treeBagDayModel)
@@ -44,10 +45,10 @@ doforthprediction <- function(model, season, mnth, holiday, weekday, workingday,
     hum = hum,
     windspeed = windspeed)
     )
-  return (prediction)                                                      ))  
+  return (prediction)                                                        
 }
 
-
+monthArray <- c("Jan", "Feb", "Apr", "May", "Jun", "Jul", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -55,7 +56,7 @@ shinyServer(function(input, output) {
    reactive({
 	output$predictionInfo <- dotheprediction(treeBagDayModel,
 	season = as.factor(input$season),
-	mnth = (which(c("Jan", "Feb", "Apr", "May", "Jun", "Jul", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec") == input$mnth)),
+	mnth = (which(monthArray == input$mnth)),
 	season = (as.factor(input$season)),
 	holiday = input$holiday,
 	workingday = input$workingday,
@@ -64,6 +65,7 @@ shinyServer(function(input, output) {
 	atemp = input$atemp,
 	hum = input$hum,
 	windspeed = input$windspeed
-   })
+   )})
   
 })
+   
