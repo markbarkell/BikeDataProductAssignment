@@ -34,7 +34,7 @@ set.seed(0x86d36f8)
 
 doforthprediction <- function(model, season, mnth, holiday, weekday, workingday, weathersit, temp, atemp, hum, windspeed) {
   
-  prediction <- caret::predict(model, data.frame(
+  prediction <- predict(model, data.frame(
     season = season,
     holiday = holiday,
     weekday = weekday,
@@ -54,11 +54,11 @@ monthArray <- c("Jan", "Feb", "Apr", "May", "Jun", "Jul", "Mar", "Apr", "May", "
 shinyServer(function(input, output) {
    treeBagDayModel <- makeTheModel()
    reactive({
-	output$predictionInfo <- dotheprediction(treeBagDayModel,
+	output$predictionInfo <- doforthprediction(treeBagDayModel,
 	season = as.factor(input$season),
 	mnth = (which(monthArray == input$mnth)),
-	season = (as.factor(input$season)),
 	holiday = input$holiday,
+	weekday = input$weekday,
 	workingday = input$workingday,
 	weathersit = input$whethersit,
 	temp = input$temp,
@@ -69,3 +69,4 @@ shinyServer(function(input, output) {
   
 })
    
+# doforthprediction(m, season = "spring", mnth = 4, holiday = 1, workingday = 1, weathersit = "ClearOrFewCloudsOrPartyCloudy", temp = 23, atemp = 27, hum = 20, windspeed = 3, weekday = "Monday")
