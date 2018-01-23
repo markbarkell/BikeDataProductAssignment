@@ -36,6 +36,7 @@ doforthprediction <- function(model, season, mnth, holiday, weekday, workingday,
   
   prediction <- predict(model, data.frame(
     season = season,
+    mnth = mnth,
     holiday = holiday,
     weekday = weekday,
     workingday = workingday,
@@ -69,4 +70,4 @@ shinyServer(function(input, output) {
   
 })
    
-# doforthprediction(m, season = "spring", mnth = 4, holiday = 1, workingday = 1, weathersit = "ClearOrFewCloudsOrPartyCloudy", temp = 23, atemp = 27, hum = 20, windspeed = 3, weekday = "Monday")
+# doforthprediction(m, season = "spring", mnth = 4, holiday = 1, workingday = 1, weathersit = "ClearOrFewCloudsOnrPartyCloudy", temp = 23, atemp = 27, hum = 20, windspeed = 3, weekday = "Monday")
