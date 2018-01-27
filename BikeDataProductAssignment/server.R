@@ -38,7 +38,7 @@ doforthprediction <- function(model, season, mnth, holiday, weekday, workingday,
     season = season,
     mnth = mnth,
     holiday = holiday,
-    weekday = weekday,
+    weekday = as.factor(weekday),
     workingday = workingday,
     weathersit = weathersit,
     temp = temp,
@@ -51,6 +51,8 @@ doforthprediction <- function(model, season, mnth, holiday, weekday, workingday,
 
 monthArray <- c("Jan", "Feb", "Apr", "May", "Jun", "Jul", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
+weekdayArray <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saterday")
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
    treeBagDayModel <- makeTheModel()
@@ -59,7 +61,7 @@ shinyServer(function(input, output) {
 	season = as.factor(input$season),
 	mnth = (which(monthArray == input$mnth)),
 	holiday = input$holiday,
-	weekday = input$weekday,
+	weekday = (which(weekdayArray == input$weekday)),
 	workingday = input$workingday,
 	weathersit = input$whethersit,
 	temp = input$temp,
@@ -70,4 +72,4 @@ shinyServer(function(input, output) {
   
 })
    
-# doforthprediction(m, season = "spring", mnth = 4, holiday = 1, workingday = 1, weathersit = "ClearOrFewCloudsOnrPartyCloudy", temp = 23, atemp = 27, hum = 20, windspeed = 3, weekday = "Monday")
+# doforthprediction(m, season = "spring", mnth = 4, holiday = 1, workingday = 1, weathersit = "ClearOrFewCloudsOrPartyCloudy", temp = 23, atemp = 27, hum = 20, windspeed = 3, weekday = 2)
