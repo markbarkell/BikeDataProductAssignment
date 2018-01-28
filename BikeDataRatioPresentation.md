@@ -22,4 +22,12 @@ The input is weather conditions and calendar information which is desired to hav
 Plot of Resdiduals
 ========================================================
 
-![plot of chunk unnamed-chunk-1](BikeDataRatioPresentation-figure/unnamed-chunk-1-1.png)
+The following is a plot of the residuals of predicted vs actual of the training data:
+
+
+
+
+```
+Error in predict(treeBagDayModel, trainingDay[, worthyDayParameters]) : 
+  object 'treeBagDayModel' not found
+```

@@ -22,6 +22,84 @@ The input is weather conditions and calendar information which is desired to hav
 Plot of Resdiduals
 ========================================================
 
+The following is a plot of the residuals of predicted vs actual of the training data:
+
 ```{r, echo=FALSE}
-plot(cars)
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/00275/Bike-Sharing-Dataset.zip"
+zipFileLocation = "./Bike-Sharing-Data.zip"
+if (!file.exists(zipFileLocation)) {
+  download.file(url, zipFileLocation)
+}
+dayCsvFileName = "./day.csv"
+hourCsvFileName = "./hour.csv"
+if (!file.exists(dayCsvFileName)) {
+  unzip(zipfile = zipFileLocation)
+}
+
+dayData <- read.csv(file = dayCsvFileName)
+hourData <- read.csv(file = hourCsvFileName)
+library(caret)
+
+
+worthyDayParameters <- c("season", "mnth", "holiday", "weekday", "workingday", "weathersit", "temp", "atemp", "hum", "windspeed")
+
+dayReader <- function () {
+  dayData <- read.csv("./day.csv")
+  weekdayFactor <- as.factor(c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+  seasonFactor <- as.factor(c("spring", "summer", "fall", "winter"))
+  weathersitFactor <- as.factor(c("ClearOrFewCloudsOrPartyCloudy", "MistCloudyOrMistBrokenCloudsOrMistFewCloudsOrMist", "LightSnowOrLightRainOrThunderStormOrScatteredCloudsOrLightRainOrScatteredClouds", "HeavyRainOrIcePalletsOrThunderstormOrMistOrSnowOrFog"))
+  dayData$season <- seasonFactor[dayData$season]
+  dayData$weathersit <- weathersitFactor[dayData$weathersit]
+  dayData$weekday <- as.factor(1 + dayData$weekday)
+  return (dayData)
+}
+
+
+makeTheModel <- function() {
+set.seed(0x86d36f8)
+  dayData <- dayReader()
+  dayPart <- createDataPartition(y = dayData$casual, p = .7, list=FALSE)
+  trainingDay <- dayData[dayPart,] 
+  treeBagDayModel <- caret::train(y = (trainingDay$casual+1)/(trainingDay$registered+1), x = trainingDay[,worthyDayParameters], method = "treebag", preProcess = c("scale", "center", "BoxCox"))
+  return (treeBagDayModel)
+}
+
+doforthprediction <- function(model, season, mnth, holiday, weekday, workingday, weathersit, temp, atemp, hum, windspeed) {
+   
+  df <-data.frame(
+    season = season,
+    mnth = mnth,
+    holiday = holiday,
+    weekday = weekday,
+    workingday = workingday,
+    weathersit = weathersit,
+    temp = temp,
+    atemp = atemp,
+    hum = hum,
+    windspeed = windspeed)
+  prediction <- predict(model, df)
+  return (prediction)                                                        
+}
+
+monthArray <- c("Jan", "Feb", "Apr", "May", "Jun", "Jul", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+weekdayArray <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saterday")
+
+model <- makeTheModel()
+resdsDay <-  predict(treeBagDayModel, trainingDay[,worthyDayParameters]) - (trainingDay$casual+1)/(trainingDay$registered+1)
+plot(y = resdsDay, x = trainingDay$dteday)
+
 ```
+
+What is the use?
+========================================================
+
+- Give registered users arm bands that say "Ask me about biking?" so to encorage users to register.
+- Give causual users a discount to register on days predicted to have the ratio the administrator desires.
+
+Data Providence 
+========================================================
+
+The data is real data from the following site:
+ [Bike Sharing Dataset Data Set](https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset#)
+ 
