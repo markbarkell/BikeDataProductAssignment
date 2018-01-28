@@ -11,7 +11,7 @@ library(shiny)
 
 titlePanelVar <- titlePanel("Biker Ratio Prediction")
 mainbarPanelVar <- mainPanel(
-  verbatimTextOutput(outputId = "predictionInfo")
+  textOutput("predictionInfo")
 )
 
 pDescription1 <- p("This application predicts the ratio of casual to registered users for a bicycle sharing system.")
@@ -21,6 +21,7 @@ tempInput <- sliderInput(inputId = "temp", label = "temperature", min = -100, ma
 
 atempInput <- sliderInput(inputId = "atemp", label = "air temperature", min = -100, max = 100, step = 1, value = 0)
 humInput <- sliderInput(inputId = "hum", label = "humidity",min = 0, max = 100, step = 1, value = 0)
+windspeedInput <- sliderInput(inputId = "windspeed", label = "windspeed", min = 0, max = 165, value = 0)
 
 
 sidebarPanelVar <- sidebarPanel(
@@ -29,6 +30,7 @@ sidebarPanelVar <- sidebarPanel(
   ,tempInput
   ,atempInput
   ,humInput 
+  ,windspeedInput
   ,radioButtons(inputId = "season",
                 label = "season",
                 choices = c("spring", "summer", "fall", "winter"))
@@ -48,7 +50,7 @@ sidebarPanelVar <- sidebarPanel(
                 choices = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saterday")
   )
   ,checkboxInput(inputId = "holiday", label="is holiday")
-  ,checkboxInput(inputId = "workday", label="is workday")
+  ,checkboxInput(inputId = "workingday", label="is workday")
 )
 
 sidebarLayoutVar <- sidebarLayout(
