@@ -24,10 +24,17 @@ Plot of Resdiduals
 
 The following is a plot of the residuals of predicted vs actual of the training data:
 
+![plot of chunk unnamed-chunk-1](BikeDataRatioPresentation-figure/unnamed-chunk-1-1.png)
 
+What is the use?
+========================================================
 
+- Give registered users arm bands that say "Ask me about biking?" so to encorage users to register.
+- Give causual users a discount to register on days predicted to have the ratio the administrator desires.
 
-```
-Error in predict(treeBagDayModel, trainingDay[, worthyDayParameters]) : 
-  object 'treeBagDayModel' not found
-```
+Data Providence 
+========================================================
+
+The data is real data from the following site:
+ [Bike Sharing Dataset Data Set](https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset#)
+ 

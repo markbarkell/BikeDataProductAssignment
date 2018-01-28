@@ -54,12 +54,16 @@ dayReader <- function () {
   return (dayData)
 }
 
-
-makeTheModel <- function() {
+getTrainingData <- function() {
 set.seed(0x86d36f8)
   dayData <- dayReader()
   dayPart <- createDataPartition(y = dayData$casual, p = .7, list=FALSE)
   trainingDay <- dayData[dayPart,] 
+  return (trainingDay)
+}
+
+makeTheModel <- function() {
+  trainingData <- getTrainingData()
   treeBagDayModel <- caret::train(y = (trainingDay$casual+1)/(trainingDay$registered+1), x = trainingDay[,worthyDayParameters], method = "treebag", preProcess = c("scale", "center", "BoxCox"))
   return (treeBagDayModel)
 }
@@ -85,8 +89,11 @@ monthArray <- c("Jan", "Feb", "Apr", "May", "Jun", "Jul", "Mar", "Apr", "May", "
 
 weekdayArray <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saterday")
 
+
+trainingDay <- getTrainingData()
+
 model <- makeTheModel()
-resdsDay <-  predict(treeBagDayModel, trainingDay[,worthyDayParameters]) - (trainingDay$casual+1)/(trainingDay$registered+1)
+resdsDay <-  predict(model, trainingDay[,worthyDayParameters]) - (trainingDay$casual+1)/(trainingDay$registered+1)
 plot(y = resdsDay, x = trainingDay$dteday)
 
 ```
