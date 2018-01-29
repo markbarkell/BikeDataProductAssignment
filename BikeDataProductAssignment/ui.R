@@ -16,6 +16,7 @@ mainbarPanelVar <- mainPanel(
 
 pDescription1 <- p("This application predicts the ratio of casual to registered users for a bicycle sharing system.")
 pDescription2 <- p("To use the system, one must select Season, Day Of Week, Weather Forecast, Month, weekday, weather situation, real temp, air temp, humidity, and windspeed.  In addition, one must indicate whether the day is a holiday wheter a workday") 
+pDescription3 <- p("Increasing temperature and air temperature and waiting a few seconds will reactively cause the floating point displayed to be updated.  Well, updated sometimes.")
 
 tempInput <- sliderInput(inputId = "temp", label = "temperature", min = -100, max = 100, step = 1, value = 0)
 
@@ -27,6 +28,7 @@ windspeedInput <- sliderInput(inputId = "windspeed", label = "windspeed", min = 
 sidebarPanelVar <- sidebarPanel(
   pDescription1
   ,pDescription2
+  ,pDescription3
   ,tempInput
   ,atempInput
   ,humInput 

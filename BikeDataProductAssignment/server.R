@@ -60,7 +60,7 @@ functionality <- function(input, output) {
   
   innerPredict <- reactive({
     laMnth <- which(monthArray == input$mnth)
-    return (doforthprediction(m, season = input$season, mnth = laMnth, holiday = input$holiday, workingday = input$workingday, weathersit = input$weathersit, temp = input$temp, atemp = input$atemp, hum = input$hum, windspeed = input$windspeed, weekday = as.factor(2)))
+    return (doforthprediction(treeBagDayModel, season = input$season, mnth = laMnth, holiday = input$holiday, workingday = input$workingday, weathersit = input$weathersit, temp = input$temp, atemp = input$atemp, hum = input$hum, windspeed = input$windspeed, weekday = as.factor(2)))
     #return ( doforthprediction(treeBagDayModel,
     #                           season = as.factor(input$season),
     #                           mnth = (which(monthArray == input$mnth)),
