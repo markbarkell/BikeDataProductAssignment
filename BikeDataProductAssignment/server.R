@@ -14,6 +14,13 @@ install.packages("shiny")
 if (!require("caret")) {
   install.packages("caret")
 }
+if (!require("ipred")) {
+  install.packages("ipred")
+}
+if (!require("e1071")) {
+  install.packages("e1071")
+}
+
 library(shiny)
 library(caret)
 
