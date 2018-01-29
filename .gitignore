@@ -1,4 +1,7 @@
 
+# This way RShiny is not put up on git source code control.
+*.dcf
+
 # The day.csv is in the Bike Sharing Data
 day.csv
 # The hour.csv is in the Bike Sharing
