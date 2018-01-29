@@ -7,6 +7,13 @@
 #    http://shiny.rstudio.com/
 #
 
+
+if (!require("shiny")) {
+install.packages("shiny")
+}
+if (!require("caret")) {
+  install.packages("caret")
+}
 library(shiny)
 library(caret)
 
